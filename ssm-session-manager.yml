@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  SessionManagerSSMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/AmazonSSMManagedInstanceCore        
+
+  SessionManagerPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: SessionManagerPolicy
+      Roles:
+        - !Ref SessionManagerSSMRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: '*'
+            Resource: '*'
+
+  InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref SessionManagerSSMRole
+
+Outputs:
+  SessionManagerSSMRoleARN:
+    Description: 'ARN of the IAM role for Session Manager'
+    Value: !GetAtt SessionManagerSSMRole.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-SessionManagerSSMRoleARN'
+  SessionManagerSSMRoleInstanceProfile:
+    Description: 'Instance Profile of the IAM role for Session Manager'
+    Value: !GetAtt InstanceProfile.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-SessionManagerSSMRoleInstanceProfile'    
+      
