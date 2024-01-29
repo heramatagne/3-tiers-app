@@ -10,10 +10,10 @@ This Git repository contains CloudFormation templates for deploying a scalable a
 - p1-app-.yml
   
 **IAM role**
-- ssm-session-manager.yml
+- p1-ssm-session-manager.yml
   
 **database**
-- db.yml
+- p1-db.yml
 
 # Tier Description
 
