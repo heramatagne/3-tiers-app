@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('AKIAW45YMRGH7YTQN346')
-        AWS_SECRET_ACCESS_KEY = credentials('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')
+        AWS_ACCESS_KEY_ID     = credentials
+        AWS_SECRET_ACCESS_KEY = credentials
         AWS_DEFAULT_REGION    = 'us-east-1'
         NETWORK_STACK_NAME    = 'P1'
         SSM_STACK_NAME        = 'P1-ssm-role'         
