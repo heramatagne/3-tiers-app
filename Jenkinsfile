@@ -1,3 +1,5 @@
+@Library('github.com/releaseworks/jenkinslib') _
+
 pipeline {
     agent any
 
@@ -19,11 +21,11 @@ pipeline {
     stages {
         stage('Deploy Network Stack') {
             steps {
-                script {
+                withAWS(credentials: 'aws-key', region: 'us-east-1') {
                     // Validate network CloudFormation template
-                    sh "aws cloudformation validate-template --template-body file://p1-network-1.yml"
+                    sh "aws cloudformation validate-template --template-body file://$NETWORK_TEMPLATE_FILE"
                     // Create or update network CloudFormation stack
-                    sh "aws cloudformation deploy --stack-name P1 --template-file p1-network-1.yml"
+                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
                 }
             }
         }
