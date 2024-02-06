@@ -19,11 +19,8 @@ pipeline {
     stages {
         stage('Deploy Network Stack') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding', 
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    credentialsId: 'admin',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    // Validate network CloudFormation template
+                    sh "aws cloudformation validate-template --template-body file://$NETWORK_TEMPLATE_FILE"
                     // Create or update network CloudFormation stack
                     sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
                 }
