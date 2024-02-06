@@ -14,6 +14,7 @@ pipeline {
         NETWORK_PARAMETER_FILE= 'network-parameters.json' 
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.json' 
         DATABASE_PARAMETER_FILE= 'database-parameters.json' 
+    }
 
     stages {
         stage('Deploy Network Stack') {
@@ -26,3 +27,5 @@ pipeline {
                 }
             }
         }
+    }
+}
