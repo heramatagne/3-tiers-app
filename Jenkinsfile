@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCESS_KEY_ID     = credentials
-        AWS_SECRET_ACCESS_KEY = credentials
         AWS_DEFAULT_REGION    = 'us-east-1'
         NETWORK_STACK_NAME    = 'P1'
         SSM_STACK_NAME        = 'P1-ssm-role'         
@@ -22,9 +20,9 @@ pipeline {
             steps {
                 script {
                     // Validate network CloudFormation template
-                    sh "aws cloudformation validate-template --template-body file://$NETWORK_TEMPLATE_FILE"
+                    sh "aws cloudformation validate-template --template-body file://p1-network-1.yml"
                     // Create or update network CloudFormation stack
-                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE --parameter-overrides file://$NETWORK_PARAMETER_FILE --capabilities CAPABILITY_IAM"
+                    sh "aws cloudformation deploy --stack-name P1 --template-file p1-network-1.yml"
                 }
             }
         }
