@@ -12,6 +12,9 @@ pipeline {
         WEBAPP_TEMPLATE_FILE  = 'p1-app-.yml'
         DATABASE_TEMPLATE_FILE= 'p1-db.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
+        LatestAmiId           = '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+        InstanceType          = 't2.micro'
+        OperatorEMail         = 'heramatagne@gmail.com'
     }
 
     stages {
@@ -49,7 +52,7 @@ pipeline {
                     credentialsId: 'admin',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update WebApp CloudFormation stack with CAPABILITY_IAM and parameter overrides
-                    sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides \$(cat $WEBAPP_PARAMETER_FILE) --capabilities CAPABILITY_IAM"
+                    sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides LatestAmiId=$LatestAmiId InstanceType=$InstanceType OperatorEMail=$OperatorEMail --capabilities CAPABILITY_IAM"
                 }
             }
         }
