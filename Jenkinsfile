@@ -39,5 +39,18 @@ pipeline {
                 }
             }
         }
+        
+        stage('Deploy WebApp Stack') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding', 
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    credentialsId: 'admin',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    // Create or update SSM CloudFormation stack with CAPABILITY_IAM
+                    sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM"
+                }
+            }
+        }                
     }
 }
