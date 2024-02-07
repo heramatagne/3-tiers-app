@@ -11,11 +11,10 @@ pipeline {
         SSM_TEMPLATE_FILE     = 'p1-ssm-session-manager.yml'       
         WEBAPP_TEMPLATE_FILE  = 'p1-app-.yml'
         DATABASE_TEMPLATE_FILE= 'p1-db.yml' 
-
     }
 
     stages {
-        stage('Deploy SSM Stack') {
+        stage('Deploy Network Stack') {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding', 
@@ -23,9 +22,22 @@ pipeline {
                     credentialsId: 'admin',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update network CloudFormation stack
-                    sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE"
+                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
                 }
             }
         }
+
+        stage('Deploy SSM Stack') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding', 
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    credentialsId: 'admin',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    // Create or update SSM CloudFormation stack with CAPABILITY_IAM
+                    sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM"
+                }
+            }
+        }        
     }
 }
