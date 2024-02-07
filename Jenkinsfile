@@ -12,7 +12,6 @@ pipeline {
         WEBAPP_TEMPLATE_FILE  = 'p1-app-.yml'
         DATABASE_TEMPLATE_FILE= 'p1-db.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
-
     }
 
     stages {
@@ -24,7 +23,7 @@ pipeline {
                     credentialsId: 'admin',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update network CloudFormation stack
-                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE "
+                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
                 }
             }
         }
@@ -49,10 +48,10 @@ pipeline {
                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                     credentialsId: 'admin',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    // Create or update SSM CloudFormation stack with CAPABILITY_IAM
-                    sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides file://$WEBAPP_PARAMETER_FILE --capabilities CAPABILITY_IAM"
+                    // Create or update WebApp CloudFormation stack with CAPABILITY_IAM and parameter overrides
+                    sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides $(cat $WEBAPP_PARAMETER_FILE) --capabilities CAPABILITY_IAM"
                 }
             }
-        }                
+        }
     }
 }
