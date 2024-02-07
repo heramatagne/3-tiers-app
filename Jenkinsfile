@@ -49,7 +49,7 @@ pipeline {
                     credentialsId: 'admin',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update WebApp CloudFormation stack with CAPABILITY_IAM and parameter overrides
-                    sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides $(cat $WEBAPP_PARAMETER_FILE) --capabilities CAPABILITY_IAM"
+                    sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides \$(cat $WEBAPP_PARAMETER_FILE) --capabilities CAPABILITY_IAM"
                 }
             }
         }
