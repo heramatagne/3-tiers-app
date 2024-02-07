@@ -24,7 +24,7 @@ pipeline {
                     credentialsId: 'admin',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update network CloudFormation stack
-                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE --parameter-overrides file://$WEBAPP_PARAMETER_FILE --capabilities CAPABILITY_IAM"
+                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE "
                 }
             }
         }
@@ -50,7 +50,7 @@ pipeline {
                     credentialsId: 'admin',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update SSM CloudFormation stack with CAPABILITY_IAM
-                    sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE"
+                    sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides file://$WEBAPP_PARAMETER_FILE --capabilities CAPABILITY_IAM"
                 }
             }
         }                
