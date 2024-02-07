@@ -38,6 +38,6 @@ pipeline {
                     sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM"
                 }
             }
-        }        
+        }
     }
 }
