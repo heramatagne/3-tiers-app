@@ -26,8 +26,7 @@ pipeline {
                     // credentialsId: 'admin',
                     // secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update network CloudFormation stack
-                    //sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
-                    sh 'aws s3 ls'
+                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
                 }
             }
         }
