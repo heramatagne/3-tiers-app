@@ -10,7 +10,9 @@ pipeline {
         NETWORK_TEMPLATE_FILE = 'p1-network-1.yml'
         SSM_TEMPLATE_FILE     = 'p1-ssm-session-manager.yml'       
         WEBAPP_TEMPLATE_FILE  = 'p1-app-.yml'
-        DATABASE_TEMPLATE_FILE= 'p1-db.yml' 
+        DATABASE_TEMPLATE_FILE= 'p1-db.yml'
+        WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
+
     }
 
     stages {
@@ -22,7 +24,7 @@ pipeline {
                     credentialsId: 'admin',
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update network CloudFormation stack
-                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
+                    sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE --parameter-overrides file://$WEBAPP_PARAMETER_FILE --capabilities CAPABILITY_IAM"
                 }
             }
         }
