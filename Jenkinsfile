@@ -20,11 +20,11 @@ pipeline {
     stages {
         stage('Deploy Network Stack') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding', 
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    credentialsId: 'admin',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                // withCredentials([[
+                //     $class: 'AmazonWebServicesCredentialsBinding', 
+                //     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                //     credentialsId: 'admin',
+                //     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update network CloudFormation stack
                     sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
                 }
@@ -33,11 +33,11 @@ pipeline {
 
         stage('Deploy SSM Stack') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding', 
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    credentialsId: 'admin',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                // withCredentials([[
+                //     $class: 'AmazonWebServicesCredentialsBinding', 
+                //     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                //     credentialsId: 'admin',
+                //     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update SSM CloudFormation stack with CAPABILITY_IAM
                     sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM"
                 }
@@ -46,11 +46,11 @@ pipeline {
 
         stage('Deploy WebApp Stack') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding', 
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    credentialsId: 'admin',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                // withCredentials([[
+                //     $class: 'AmazonWebServicesCredentialsBinding', 
+                //     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                //     credentialsId: 'admin',
+                //     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     // Create or update WebApp CloudFormation stack with CAPABILITY_IAM and parameter overrides
                     sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides LatestAmiId=$LatestAmiId InstanceType=$InstanceType OperatorEMail=$OperatorEMail --capabilities CAPABILITY_IAM"
                 }
