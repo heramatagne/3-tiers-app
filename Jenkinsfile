@@ -17,12 +17,12 @@ pipeline {
         // DBName                = 'heramatagne@gmail.com'
     }
 
-    // stages {
-    //     stage('Deploy Network Stack') {
-    //         steps {
-    //             sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
-    //         }
-    //     }
+    stages {
+        stage('Deploy Network Stack') {
+            steps {
+                sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
+            }
+        }
 
         stage('Deploy SSM Stack') {
             steps {
