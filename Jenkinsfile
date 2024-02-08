@@ -12,17 +12,17 @@ pipeline {
         WEBAPP_TEMPLATE_FILE  = 'p1-app-.yml'
         DATABASE_TEMPLATE_FILE= 'p1-db.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
-        LatestAmiId           = '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-        InstanceType          = 't2.micro'
-        OperatorEMail         = 'heramatagne@gmail.com'
+        // MasterUsername        = '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+        // MasterUserPassword    = 't2.micro'
+        // DBName                = 'heramatagne@gmail.com'
     }
 
-    stages {
-        stage('Deploy Network Stack') {
-            steps {
-                sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
-            }
-        }
+    // stages {
+    //     stage('Deploy Network Stack') {
+    //         steps {
+    //             sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
+    //         }
+    //     }
 
         stage('Deploy SSM Stack') {
             steps {
@@ -35,5 +35,11 @@ pipeline {
                 sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE"
             }
         }
+    // stages {
+    //     stage('Deploy database') {
+    //         steps {
+    //             sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE"
+    //         }
+    //     }       
     }
 }
