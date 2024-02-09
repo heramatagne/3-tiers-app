@@ -16,7 +16,7 @@ pipeline {
     stages {
         stage('Get Operator Email') {
             steps {
-                sh "aws ssm get-parameter --region $AWS_DEFAULT_REGION --name /p1/webapp/peratorEMail --query 'Parameter.Value' --output text > operator_email.txt"
+                sh "aws ssm get-parameter --region us-east-1 --name /p1/webapp/peratorEMail --query 'Parameter.Value' --output text > operator_email.txt"
             }
         }
 
