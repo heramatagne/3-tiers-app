@@ -9,7 +9,7 @@ pipeline {
         DATABASE_STACK_NAME   = 'P1-database'
         NETWORK_TEMPLATE_FILE = 'p1-network-1.yml'
         SSM_TEMPLATE_FILE     = 'p1-ssm-session-manager.yml'       
-        WEBAPP_TEMPLATE_FILE  = 'p1-app-.yml'
+        WEBAPP_TEMPLATE_FILE  = 'p1-app.yml'
         DATABASE_TEMPLATE_FILE= 'p1-db.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
     }
