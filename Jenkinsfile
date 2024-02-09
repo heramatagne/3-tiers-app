@@ -10,13 +10,13 @@ pipeline {
         SSM_TEMPLATE_FILE     = 'p1-ssm-session-manager.yml'
         WEBAPP_TEMPLATE_FILE  = 'p1-app.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml'
-        OperatorEMail = sh(script: 'aws ssm get-parameter --region $AWS_DEFAULT_REGION --name /p1/webapp/peratorEMail --query "Parameter.Value" --output text', returnStdout: true).trim()
+        // OperatorEMail = sh(script: 'aws ssm get-parameter --region $AWS_DEFAULT_REGION --name /p1/webapp/peratorEMail --query "Parameter.Value" --output text', returnStdout: true).trim()
     }
 
     stages {
         stage('Get Operator Email') {
             steps {
-                sh "aws ssm get-parameter --region us-east-1 --name /p1/webapp/peratorEMail --query 'Parameter.Value' --output text > operator_email.txt"
+                sh "aws ssm get-parameter --region $AWS_DEFAULT_REGION --name /p1/webapp/peratorEMail --query 'Parameter.Value' --output text > operator_email.txt"
             }
         }
 
