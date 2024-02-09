@@ -14,23 +14,23 @@ pipeline {
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
     }
 
-    stages {
-        stage('Deploy Network Stack') {
-            steps {
-                sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
-            }
-        }
+    // stages {
+    //     stage('Deploy Network Stack') {
+    //         steps {
+    //             sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
+    //         }
+    //     }
 
-        stage('Deploy SSM Stack') {
-            steps {
-                sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM --region $AWS_DEFAULT_REGION"
-            }
-        }
+    //     stage('Deploy SSM Stack') {
+    //         steps {
+    //             sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM --region $AWS_DEFAULT_REGION"
+    //         }
+    //     }
 
         stage('Deploy WebApp Stack') {
             steps {
                 // Assuming OperatorEMail is retrieved from somewhere
-                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail=$OperatorEMail --region $AWS_DEFAULT_REGION"
+                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail= heramatagne@gmail.com --region $AWS_DEFAULT_REGION"
             }
         }
 
