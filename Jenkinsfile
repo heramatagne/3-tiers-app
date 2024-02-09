@@ -16,13 +16,7 @@ pipeline {
     stages {
         stage('Get Operator Email') {
             steps {
-                script {
-                    OperatorEMail = OperatorEMail.trim() // Trim whitespace
-                    // Validate email address format using regular expression
-                    if (!(OperatorEMail =~ /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)) {
-                        error "Invalid email address format: $OperatorEMail"
-                    }
-                }
+                sh "aws ssm get-parameter --region $AWS_DEFAULT_REGION --name /p1/webapp/peratorEMail --query 'Parameter.Value' --output text > operator_email.txt"
             }
         }
 
@@ -40,7 +34,7 @@ pipeline {
 
         stage('Deploy WebApp Stack') {
             steps {
-                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail=$OperatorEMail --region $AWS_DEFAULT_REGION"
+                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --region $AWS_DEFAULT_REGION --parameter-overrides OperatorEMail=$OperatorEMail"
             }
         }
     }
