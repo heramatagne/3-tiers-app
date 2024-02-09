@@ -14,18 +14,18 @@ pipeline {
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
     }
 
-    // stages {
-    //     stage('Deploy Network Stack') {
-    //         steps {
-    //             sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
-    //         }
-    //     }
+    stages {
+        // stage('Deploy Network Stack') {
+        //     steps {
+        //         sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
+        //     }
+        // }
 
-    //     stage('Deploy SSM Stack') {
-    //         steps {
-    //             sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM --region $AWS_DEFAULT_REGION"
-    //         }
-    //     }
+        // stage('Deploy SSM Stack') {
+        //     steps {
+        //         sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM --region $AWS_DEFAULT_REGION"
+        //     }
+        // }
 
         stage('Deploy WebApp Stack') {
             steps {
