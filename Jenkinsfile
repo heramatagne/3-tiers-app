@@ -12,9 +12,7 @@ pipeline {
         WEBAPP_TEMPLATE_FILE  = 'p1-app-.yml'
         DATABASE_TEMPLATE_FILE= 'p1-db.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
-        // MasterUsername        = '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-        // MasterUserPassword    = 't2.micro'
-        // DBName                = 'heramatagne@gmail.com'
+        OperatorEMail = sh(script: 'aws ssm get-parameter --name /p1/webapp/peratorEMail --query "Parameter.Value" --output text', returnStdout: true)
     }
 
     stages {
