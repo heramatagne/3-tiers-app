@@ -9,9 +9,10 @@ pipeline {
         DATABASE_STACK_NAME   = 'P1-database'
         NETWORK_TEMPLATE_FILE = 'p1-network-1.yml'
         SSM_TEMPLATE_FILE     = 'p1-ssm-session-manager.yml'       
-        WEBAPP_TEMPLATE_FILE  = 'p1-app.yml'
+        WEBAPP_TEMPLATE_FILE  = 'p1-app-.yml'
         DATABASE_TEMPLATE_FILE= 'p1-db.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml' 
+        OperatorEMail         = 'heramatagne@gmail.com'
     }
 
     stages {
@@ -29,14 +30,14 @@ pipeline {
 
         stage('Deploy WebApp Stack') {
             steps {
-                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail=$WEBAPP_PARAMETER_FILE"
+                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE"
             }
         }
-    // stages {
-    //     stage('Deploy database') {
-    //         steps {
-    //             sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE"
-    //         }
-    //     }       
+    stages {
+        stage('Deploy database') {
+            steps {
+                sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE"
+            }
+        }       
     }
 }
