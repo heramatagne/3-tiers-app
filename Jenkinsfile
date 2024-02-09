@@ -15,29 +15,28 @@ pipeline {
     }
 
     stages {
-        // stage('Deploy Network Stack') {
-        //     steps {
-        //         sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
-        //     }
-        // }
-
-        // stage('Deploy SSM Stack') {
-        //     steps {
-        //         sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM --region $AWS_DEFAULT_REGION"
-        //     }
-        // }
-
-        stage('Deploy WebApp Stack') {
+        stage('Deploy Network Stack') {
             steps {
-                // Assuming OperatorEMail is retrieved from somewhere
-                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail=heramatagne@gmail.com --region $AWS_DEFAULT_REGION"
+                sh "aws cloudformation deploy --stack-name $NETWORK_STACK_NAME --template-file $NETWORK_TEMPLATE_FILE"
             }
         }
 
-        stage('Deploy database') {
+        stage('Deploy SSM Stack') {
             steps {
-                sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
+                sh "aws cloudformation deploy --stack-name $SSM_STACK_NAME --template-file $SSM_TEMPLATE_FILE --capabilities CAPABILITY_IAM"
             }
-        }       
+        }
+
+        stage('Deploy WebApp Stack') {
+            steps {
+                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail=$WEBAPP_PARAMETER_FILE"
+            }
+        }
+    // stages {
+    //     stage('Deploy database') {
+    //         steps {
+    //             sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE"
+    //         }
+    //     }       
     }
 }
