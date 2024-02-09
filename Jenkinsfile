@@ -30,7 +30,7 @@ pipeline {
         stage('Deploy WebApp Stack') {
             steps {
                 // Assuming OperatorEMail is retrieved from somewhere
-                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail= heramatagne@gmail.com --region $AWS_DEFAULT_REGION"
+                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail=heramatagne@gmail.com --region $AWS_DEFAULT_REGION"
             }
         }
 
