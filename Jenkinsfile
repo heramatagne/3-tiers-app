@@ -29,14 +29,14 @@ pipeline {
 
         stage('Deploy WebApp Stack') {
             steps {
-                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE"
+                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail=$OperatorEMail"
             }
         }
-    // stages {
-    //     stage('Deploy database') {
-    //         steps {
-    //             sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE"
-    //         }
-    //     }       
+    stages {
+        stage('Deploy database') {
+            steps {
+                sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE"
+            }
+        }       
     }
 }
