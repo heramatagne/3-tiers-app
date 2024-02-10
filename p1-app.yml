@@ -17,10 +17,10 @@ Parameters:
   OperatorEMail:
     NoEcho: true  
     Description: Email address to notify if there are any scaling operations
-    Type: String
+    Type: AWS::SSM::Parameter::Value<String>
     AllowedPattern: "([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)"
     ConstraintDescription: must be a valid email address.
-    Default: 'heramatagne@gmail.com'
+    Default: /p1/webapp/peratorEMail
 
 Resources:
   LoadBalancer:
