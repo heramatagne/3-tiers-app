@@ -4,7 +4,7 @@ Description: AWS CloudFormation template for an RDS DB cluster.
 Parameters:
   DBInstanceID:
     Default: p1dbinstance
-    Description: My database instance
+    Description: ID for the RDS database instance. Used for identification purposes.
     Type: String
     MinLength: '1'
     MaxLength: '63'
@@ -63,12 +63,12 @@ Parameters:
     Default: 1000
   MasterUsername:
     Description: Username for MySQL database access
-    NoEcho: 'true'
+    NoEcho: true
     Type: AWS::SSM::Parameter::Value<String>
     Default: /p1db/username
   MasterUserPassword:
     Description: Password MySQL database access
-    NoEcho: 'true'
+    NoEcho: true
     Type: AWS::SSM::Parameter::Value<String>
     Default: /p1db/password
 
@@ -76,8 +76,8 @@ Resources:
   DBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup 
     Properties: 
-      DBSubnetGroupName: 'rds-subnet-group'
-      DBSubnetGroupDescription: 'My RDS Subnet Group'
+      DBSubnetGroupName: rds-subnet-group
+      DBSubnetGroupDescription: My RDS Subnet Group
       SubnetIds: 
         - !ImportValue P1-PrivateSubnet3ID
         - !ImportValue P1-PrivateSubnet4ID
@@ -87,7 +87,7 @@ Resources:
         - Key: Name
           Value: P1-dbsubnetgroup
   DBClusterParameterGroup:
-    Type: 'AWS::RDS::DBClusterParameterGroup'
+    Type: AWS::RDS::DBClusterParameterGroup
     Properties:
       Description: Parameter group for cluster
       Family: mysql8.0
@@ -99,7 +99,7 @@ Resources:
           Value: p1-cluster-parameter-group 
 
   DBCluster:
-    Type: 'AWS::RDS::DBCluster'
+    Type: AWS::RDS::DBCluster
     Properties:
       MasterUsername: !Ref MasterUsername
       MasterUserPassword: !Ref MasterUserPassword
@@ -110,10 +110,6 @@ Resources:
         - !ImportValue P1-DBSecurityGroupID
       DBClusterInstanceClass: !Ref DBInstanceClass
       DBClusterParameterGroupName: !Ref DBClusterParameterGroup
-      VpcSecurityGroupIds:
-        - !ImportValue P1-DBSecurityGroupID
-        - !ImportValue P1-WebAppSecurityGroupID
-        - !ImportValue P1-LoadBalancerSecurityGroupID
       StorageType: !Ref StorageType
       Iops: !Ref Iops
 
