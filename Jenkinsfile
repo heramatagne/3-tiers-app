@@ -9,7 +9,7 @@ pipeline {
         DATABASE_STACK_NAME   = 'P1-database'
         NETWORK_TEMPLATE_FILE = 'p1-network-1.yml'
         SSM_TEMPLATE_FILE     = 'p1-ssm-session-manager.yml'       
-        WEBAPP_TEMPLATE_FILE  = 'p1-app.yml'  // Corrected the template file name
+        WEBAPP_TEMPLATE_FILE  = 'p1-app.yml'  
         DATABASE_TEMPLATE_FILE= 'p1-db.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml'
         OperatorEMail         = sh(script: 'aws ssm get-parameter --region us-east-1 --name /p1/webapp/peratorEMail --query "Parameter.Value" --output text', returnStdout: true).trim()        
@@ -30,7 +30,7 @@ pipeline {
 
         stage('Deploy WebApp Stack') {
             steps {
-                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameters OperatorEMail=$OperatorEMail --region $AWS_DEFAULT_REGION"
+                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --parameter-overrides OperatorEMail=$OperatorEMail --region $AWS_DEFAULT_REGION"
             }
         }
 
