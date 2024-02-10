@@ -27,16 +27,16 @@ pipeline {
         //     }
         // }
 
-        stage('Deploy WebApp Stack') {
-            steps {
-                sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
-            }
-        }
-
-        // stage('Deploy database') {
+        // stage('Deploy WebApp Stack') {
         //     steps {
-        //         sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
+        //         sh "aws cloudformation deploy --stack-name $WEBAPP_STACK_NAME --template-file $WEBAPP_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
         //     }
-        // }       
+        // }
+
+        stage('Deploy database') {
+            steps {
+                sh "aws cloudformation deploy --stack-name $DATABASE_STACK_NAME --template-file $DATABASE_TEMPLATE_FILE --region $AWS_DEFAULT_REGION"
+            }
+        }       
     }
 }
