@@ -12,7 +12,7 @@ pipeline {
         WEBAPP_TEMPLATE_FILE  = 'p1-app.yml'  // Corrected the template file name
         DATABASE_TEMPLATE_FILE= 'p1-db.yml'
         WEBAPP_PARAMETER_FILE = 'webapp-parameters.yml'
-        OperatorEMail         = sh(script: 'aws ssm get-parameter --region $AWS_DEFAULT_REGION --name /p1/webapp/peratorEMail --query "Parameter.Value" --output text', returnStdout: true).trim()        
+        OperatorEMail         = sh(script: 'aws ssm get-parameter --region us-east-1 --name /p1/webapp/peratorEMail --query "Parameter.Value" --output text', returnStdout: true).trim()        
     }
 
     stages {
