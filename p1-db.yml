@@ -64,12 +64,11 @@ Parameters:
   MasterUsername:
     Description: Username for MySQL database access
     NoEcho: true
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: AWS::SSM::Parameter::Value<SecureString>
     Default: /p1db/username
   MasterUserPassword:
     Description: Password MySQL database access
-    NoEcho: true
-    Type: AWS::SSM::Parameter::Value<String>
+    Type: AWS::SSM::Parameter::Value<SecureString>
     Default: /p1db/password
 
 Resources:
