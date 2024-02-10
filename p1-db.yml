@@ -49,7 +49,7 @@ Parameters:
   StorageType:
     Description: The type of storage.
     Type: String
-    Default: gp2
+    Default: io1
     AllowedValues:
       - gp2
       - io1
@@ -68,15 +68,16 @@ Parameters:
     Default: /p1db/username
   MasterUserPassword:
     Description: Password MySQL database access
+    NoEcho: true
     Type: String
     Default: /p1db/password
 
 Resources:
   DBSubnetGroup:
-    Type: AWS::RDS::DBSubnetGroup 
+    Type: "AWS::RDS::DBSubnetGroup" 
     Properties: 
-      DBSubnetGroupName: rds-subnet-group
-      DBSubnetGroupDescription: My RDS Subnet Group
+      DBSubnetGroupName: 'rds-subnet-group'
+      DBSubnetGroupDescription: 'My RDS Subnet Group'
       SubnetIds: 
         - !ImportValue P1-PrivateSubnet3ID
         - !ImportValue P1-PrivateSubnet4ID
@@ -86,7 +87,7 @@ Resources:
         - Key: Name
           Value: P1-dbsubnetgroup
   DBClusterParameterGroup:
-    Type: AWS::RDS::DBClusterParameterGroup
+    Type: 'AWS::RDS::DBClusterParameterGroup'
     Properties:
       Description: Parameter group for cluster
       Family: mysql8.0
@@ -98,17 +99,19 @@ Resources:
           Value: p1-cluster-parameter-group 
 
   DBCluster:
-    Type: AWS::RDS::DBCluster
+    Type: 'AWS::RDS::DBCluster'
     Properties:
       MasterUsername: !Ref MasterUsername
       MasterUserPassword: !Ref MasterUserPassword
       Engine: mysql
       AllocatedStorage: !Ref DBAllocatedStorage 
       DBSubnetGroupName: !Ref DBSubnetGroup
-      VpcSecurityGroupIds:
-        - !ImportValue P1-DBSecurityGroupID
       DBClusterInstanceClass: !Ref DBInstanceClass
       DBClusterParameterGroupName: !Ref DBClusterParameterGroup
+      VpcSecurityGroupIds:
+        - !ImportValue P1-DBSecurityGroupID
+        - !ImportValue P1-WebAppSecurityGroupID
+        - !ImportValue P1-LoadBalancerSecurityGroupID
       StorageType: !Ref StorageType
       Iops: !Ref Iops
 
@@ -118,6 +121,16 @@ Outputs:
     Value: !GetAtt DBCluster.Endpoint.Address
     Export:
       Name: P1-DBClusterEndpointAddress
+  DBClusterEndpointPort:
+    Description: Port for the database
+    Value: !GetAtt DBCluster.Endpoint.Port
+    Export:
+      Name: P1-DBClusterEndpointPort
+  DBClusterEndpoint:
+    Description: Endpoint for the database
+    Value: !GetAtt DBCluster.Endpoint.Address
+    Export:
+      Name: P1-DBClusterEndpoint
   DBClusterEndpointPort:
     Description: Port for the database
     Value: !GetAtt DBCluster.Endpoint.Port
