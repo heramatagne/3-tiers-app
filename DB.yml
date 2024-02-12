@@ -1,15 +1,19 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: AWS CloudFormation template for an RDS DB cluster.
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Description": "AWS CloudFormation Sample Template for creating an Amazon RDS DB instance: 
+  Sample template showing how to create a DB instance with Enhanced Monitoring enabled.
 
 Parameters:
   DBInstanceID:
     Default: p1dbinstance
-    Description: ID for the RDS database instance. Used for identification purposes.
+    Description: My database instance
     Type: String
     MinLength: '1'
     MaxLength: '63'
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: Must begin with a letter and must not end with a hyphen or contain two consecutive hyphens.
+    ConstraintDescription: >-
+      Must begin with a letter and must not end with a hyphen or contain two
+      consecutive hyphens.
   DBName:
     Description: My database name.
     Type: String
@@ -23,13 +27,13 @@ Parameters:
     Type: String
     Default: db.m5d.large
     AllowedValues:
-      - db.m5d.large
-      - db.m5d.xlarge
-      - db.m5d.2xlarge
-      - db.m5d.4xlarge
-      - db.m5d.8xlarge
-      - db.m5d.12xlarge
-      - db.m5d.16xlarge
+      - db.m5d.large	
+      - db.m5d.xlarge	
+      - db.m5d.2xlarge	
+      - db.m5d.4xlarge	
+      - db.m5d.8xlarge	
+      - db.m5d.12xlarge	
+      - db.m5d.16xlarge	
       - db.m5d.24xlarge
   MultiAZ:
     Description: Create replica in a different Availability zone.
@@ -44,33 +48,42 @@ Parameters:
     Type: Number
     MinValue: '8'
     MaxValue: '65536'
-    ConstraintDescription: Must be between 20 and 65536 GiB.
+    ConstraintDescription: must be between 20 and 65536 GiB.
     Default: 100
   StorageType:
     Description: The type of storage.
     Type: String
-    Default: io1
+    Default: gp2
     AllowedValues:
       - gp2
       - io1
-    ConstraintDescription: Must be a valid storage type.
+    ConstraintDescription: must be a valid storage type.
   Iops:
     Description: The amount of provisioned IOPS. Setting this implies a gp2 storage type.
     Type: Number
     MinValue: '100'
     MaxValue: '3200'
-    ConstraintDescription: Must be between 100 and 3200.
-    Default: 1000
+    ConstraintDescription: must be between 100 and 3200.
+    Default: 1000     
+
   MasterUsername:
     Description: Username for MySQL database access
-    NoEcho: true
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /p1db/username
+    NoEcho: 'true'
+    Type: String
+    MinLength: '1'
+    MaxLength: '16'
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
+    AllowedValues:
+      - admin
+
   MasterUserPassword:
     Description: Password MySQL database access
-    NoEcho: true
+    NoEcho: 'true'
     Type: String
-    Default: /p1db/password
+    MinLength: '8'
+    MaxLength: '41'
+    AllowedPattern: '(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])^([a-zA-Z0-9]{8,32})$'
 
 Resources:
   DBSubnetGroup:
@@ -106,6 +119,8 @@ Resources:
       Engine: mysql
       AllocatedStorage: !Ref DBAllocatedStorage 
       DBSubnetGroupName: !Ref DBSubnetGroup
+      VpcSecurityGroupIds:
+        - !ImportValue P1-DBSecurityGroupID
       DBClusterInstanceClass: !Ref DBInstanceClass
       DBClusterParameterGroupName: !Ref DBClusterParameterGroup
       VpcSecurityGroupIds:
@@ -136,3 +151,14 @@ Outputs:
     Value: !GetAtt DBCluster.Endpoint.Port
     Export:
       Name: P1-DBClusterEndpointPort
+  DBClusterEndpoint:
+    Description: Endpoint for the database
+    Value: !GetAtt DBCluster.Endpoint.Address
+    Export:
+      Name: P1-DBClusterEndpoint
+  DBClusterEndpointPort:
+    Description: Port for the database
+    Value: !GetAtt DBCluster.Endpoint.Port
+    Export:
+      Name: P1-DBClusterEndpointPort
+  
